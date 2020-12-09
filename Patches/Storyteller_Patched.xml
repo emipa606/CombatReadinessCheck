@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/StorytellerDef[@Name="BaseStoryteller"]/pointsFactorFromAdaptDays/points/li[3]</xpath>
+    <value>
+      <li>(50, 0.85)</li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/StorytellerDef[@Name="BaseStoryteller"]/pointsFactorFromAdaptDays/points/li[4]</xpath>
+    <value>
+      <li>(100, 1.00)</li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/StorytellerDef[defName = "Randy"]/comps/li[1]/randomPointsFactorRange</xpath>
+    <value>
+      <randomPointsFactorRange>0.33~1.0</randomPointsFactorRange>
+    </value>
+  </Operation>
+</Patch>
