@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
+using Mlie;
 using RimWorld;
 using RimWorld.Planet;
-using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -13,10 +13,17 @@ namespace CRC_Reintegrated
         private const string SettingPointsPerColonist = "Base threat points per colonist";
         private const string SettingPercentBuildingWealth = "Percentage of building wealth used";
         private const string SettingPercentArmour = "Percentage of value used for armour";
-        private const string SettingPercentIndustrialWeapons = "Percentage of value used for industrial weapons or better";
+
+        private const string SettingPercentIndustrialWeapons =
+            "Percentage of value used for industrial weapons or better";
+
         private const string SettingPercentPreIndustrialWeapons = "Percentage of value used for pre-industrial weapons";
         private const string SettingPercentReleaseableAnimalPower = "Percentage of combat animal strength to use";
         private const string SettingDebugLogging = "Show debug output in log";
+
+        private const string SettingPreIndustrialArmor =
+            "Use pre-industrial weapon percent also for pre-industrial armors";
+
         private const string SettingFair = "Fair";
         private const string SettingThisIsFine = "This is fine";
         private const string SettingFeelsBadMan = "Feels bad man";
@@ -24,9 +31,14 @@ namespace CRC_Reintegrated
         public static CRC_Settings settings;
         private static Harmony harmony;
 
+        private static string currentVersion;
+
         public CRC_Loader(ModContentPack content) : base(content)
         {
             harmony = new Harmony("net.marvinkosh.rimworld.mod.combatreadinesscheck");
+            currentVersion =
+                VersionFromManifest.GetVersionFromModMetaData(
+                    ModLister.GetActiveModWithIdentifier("Mlie.CombatReadinessCheck"));
             settings = GetSettings<CRC_Settings>();
             PatchMap();
             PatchCaravan();
@@ -44,8 +56,9 @@ namespace CRC_Reintegrated
             {
                 ColumnWidth = inRect.width / 3f
             };
-            Listing_Standard listingStandard2 = listingStandard1;
+            var listingStandard2 = listingStandard1;
             listingStandard2.Begin(inRect);
+            listingStandard2.ColumnWidth = inRect.width / 2;
             if (listingStandard2.ButtonText(SettingFair))
             {
                 settings.numPointsPerColonist = 45;
@@ -56,6 +69,7 @@ namespace CRC_Reintegrated
                 settings.percentOfCombatPowerForReleasableAnimals = 9f;
                 RefreshBuffer();
             }
+
             if (listingStandard2.ButtonText(SettingThisIsFine))
             {
                 settings.numPointsPerColonist = 85;
@@ -66,6 +80,7 @@ namespace CRC_Reintegrated
                 settings.percentOfCombatPowerForReleasableAnimals = 18f;
                 RefreshBuffer();
             }
+
             if (listingStandard2.ButtonText(SettingFeelsBadMan))
             {
                 settings.numPointsPerColonist = 125;
@@ -76,6 +91,7 @@ namespace CRC_Reintegrated
                 settings.percentOfCombatPowerForReleasableAnimals = 27f;
                 RefreshBuffer();
             }
+
             if (listingStandard2.ButtonText(SettingPainTrain))
             {
                 settings.numPointsPerColonist = 165;
@@ -86,7 +102,20 @@ namespace CRC_Reintegrated
                 settings.percentOfCombatPowerForReleasableAnimals = 36f;
                 RefreshBuffer();
             }
+
             listingStandard2.Gap();
+            listingStandard2.CheckboxLabeled(SettingPreIndustrialArmor, ref settings.preIndustrialArmor);
+            listingStandard2.Gap();
+            listingStandard2.CheckboxLabeled(SettingDebugLogging, ref settings.debugLog);
+            if (currentVersion != null)
+            {
+                listingStandard2.Gap();
+                GUI.contentColor = Color.gray;
+                listingStandard2.Label($"Installed mod-version: {currentVersion}");
+                GUI.contentColor = Color.white;
+            }
+
+            listingStandard2.NewColumn();
             RefreshBuffer();
             listingStandard2.Label(SettingPointsPerColonist);
             string numInputBuffer1;
@@ -102,17 +131,18 @@ namespace CRC_Reintegrated
             listingStandard2.Gap();
             listingStandard2.Label(SettingPercentIndustrialWeapons);
             string numInputBuffer3;
-            listingStandard2.TextFieldNumeric(ref settings.percentOfValueForIndustrialWeapons, ref numInputBuffer3, max: 800f);
+            listingStandard2.TextFieldNumeric(ref settings.percentOfValueForIndustrialWeapons, ref numInputBuffer3,
+                max: 800f);
             listingStandard2.Gap();
             listingStandard2.Label(SettingPercentPreIndustrialWeapons);
             string numInputBuffer4;
-            listingStandard2.TextFieldNumeric(ref settings.percentOfValueForPreIndustrialWeapons, ref numInputBuffer4, max: 800f);
+            listingStandard2.TextFieldNumeric(ref settings.percentOfValueForPreIndustrialWeapons, ref numInputBuffer4,
+                max: 800f);
             listingStandard2.Gap();
             listingStandard2.Label(SettingPercentReleaseableAnimalPower);
             string numInputBuffer5;
-            listingStandard2.TextFieldNumeric(ref settings.percentOfCombatPowerForReleasableAnimals, ref numInputBuffer5, max: 800f);
-            listingStandard2.Gap();
-            listingStandard2.CheckboxLabeled(SettingDebugLogging, ref settings.debugLog);
+            listingStandard2.TextFieldNumeric(ref settings.percentOfCombatPowerForReleasableAnimals,
+                ref numInputBuffer5, max: 800f);
             listingStandard2.End();
 
             void RefreshBuffer()
@@ -130,14 +160,15 @@ namespace CRC_Reintegrated
         {
             //CRC_Loader.harmony = new Harmony("net.marvinkosh.rimworld.mod.combatreadinesscheck");
             Log.Message("Combat Readiness Check: Trying to patch Map.PlayerWealthForStoryteller");
-            MethodInfo getMethod = AccessTools.Method(typeof(Map), "get_PlayerWealthForStoryteller");
+            var getMethod = AccessTools.Method(typeof(Map), "get_PlayerWealthForStoryteller");
             if (getMethod == null)
             {
-                Log.Warning("Got null original method when attempting to find original Map.PlayerWealthForStoryteller.");
+                Log.Warning(
+                    "Got null original method when attempting to find original Map.PlayerWealthForStoryteller.");
             }
             else
             {
-                MethodInfo method = AccessTools.Method(typeof(MarvsMapWealthForStoryTeller), "Prefix");
+                var method = AccessTools.Method(typeof(MarvsMapWealthForStoryTeller), "Prefix");
                 if (method == null)
                 {
                     Log.Warning("Got null method when attempting to load prefix.");
@@ -154,14 +185,15 @@ namespace CRC_Reintegrated
         {
             //CRC_Loader.harmony = new Harmony("net.marvinkosh.rimworld.mod.combatreadinesscheck");
             Log.Message("Combat Readiness Check: Trying to patch Caravan.PlayerWealthForStoryteller");
-            MethodInfo getMethod = AccessTools.Method(typeof(Caravan), "get_PlayerWealthForStoryteller");
+            var getMethod = AccessTools.Method(typeof(Caravan), "get_PlayerWealthForStoryteller");
             if (getMethod == null)
             {
-                Log.Warning("Got null original method when attempting to find original Caravan.PlayerWealthForStoryteller.");
+                Log.Warning(
+                    "Got null original method when attempting to find original Caravan.PlayerWealthForStoryteller.");
             }
             else
             {
-                MethodInfo method = AccessTools.Method(typeof(MarvsCaravanWealthForStoryTeller), "Prefix");
+                var method = AccessTools.Method(typeof(MarvsCaravanWealthForStoryTeller), "Prefix");
                 if (method == null)
                 {
                     Log.Warning("Got null method when attempting to load prefix.");
@@ -178,14 +210,15 @@ namespace CRC_Reintegrated
         {
             //CRC_Loader.harmony = new Harmony("net.marvinkosh.rimworld.mod.combatreadinesscheck");
             Log.Message("Combat Readiness Check: Trying to patch StorytellerUtility.DefaultThreatPointsNow");
-            MethodInfo methodInfo = AccessTools.Method(typeof(StorytellerUtility), "DefaultThreatPointsNow");
+            var methodInfo = AccessTools.Method(typeof(StorytellerUtility), "DefaultThreatPointsNow");
             if (methodInfo == null)
             {
-                Log.Warning("Got null original method when attempting to find original StorytellerUtility.DefaultThreatPointsNow.");
+                Log.Warning(
+                    "Got null original method when attempting to find original StorytellerUtility.DefaultThreatPointsNow.");
             }
             else
             {
-                MethodInfo method = AccessTools.Method(typeof(MarvsStoryTellerUtility), "Prefix");
+                var method = AccessTools.Method(typeof(MarvsStoryTellerUtility), "Prefix");
                 if (method == null)
                 {
                     Log.Warning("Got null method when attempting to load prefix.");
@@ -200,23 +233,28 @@ namespace CRC_Reintegrated
 
         public class CRC_Settings : ModSettings
         {
+            public bool debugLog;
             public int numPointsPerColonist = 45;
             public float percentOfCombatPowerForReleasableAnimals = 9f;
-            public float percentOfValueForBuildings = 25f;
             public float percentOfValueForArmour = 100f;
+            public float percentOfValueForBuildings = 25f;
             public float percentOfValueForIndustrialWeapons = 100f;
             public float percentOfValueForPreIndustrialWeapons = 25f;
-            public bool debugLog = false;
+            public bool preIndustrialArmor;
 
             public override void ExposeData()
             {
                 Scribe_Values.Look(ref numPointsPerColonist, "num_Points_Per_Colonist", 34, true);
                 Scribe_Values.Look(ref percentOfValueForBuildings, "percent_Value_For_Buildings", 25f, true);
                 Scribe_Values.Look(ref percentOfValueForArmour, "percent_Value_For_Armour", 100f, true);
-                Scribe_Values.Look(ref percentOfValueForIndustrialWeapons, "percent_Value_For_IndustrialWeapons", 100f, true);
-                Scribe_Values.Look(ref percentOfValueForPreIndustrialWeapons, "percent_Value_For_PreIndustrialWeapons", 25f, true);
-                Scribe_Values.Look(ref percentOfCombatPowerForReleasableAnimals, "percent_Value_For_ReleasableAnimals", 9f, true);
+                Scribe_Values.Look(ref percentOfValueForIndustrialWeapons, "percent_Value_For_IndustrialWeapons", 100f,
+                    true);
+                Scribe_Values.Look(ref percentOfValueForPreIndustrialWeapons, "percent_Value_For_PreIndustrialWeapons",
+                    25f, true);
+                Scribe_Values.Look(ref percentOfCombatPowerForReleasableAnimals, "percent_Value_For_ReleasableAnimals",
+                    9f, true);
                 Scribe_Values.Look(ref debugLog, "shouldLogDebugInfo", forceSave: true);
+                Scribe_Values.Look(ref preIndustrialArmor, "preIndustrialArmor");
             }
         }
     }

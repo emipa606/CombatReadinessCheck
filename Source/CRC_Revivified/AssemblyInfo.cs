@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-
 [assembly: AssemblyTitle("CRC_Revivified")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]

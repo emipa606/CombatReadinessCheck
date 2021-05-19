@@ -16,6 +16,7 @@ namespace CRC_Reintegrated
                     Log.Message("CRC: begin output");
                     Log.Message("CE is loaded: " + ModLister.HasActiveModWithName("Combat Extended"));
                 }
+
                 ArmouryUtility.GetStorytellerArmouryPoints(__instance, out var armouryPoints);
                 if (CRC_Loader.settings.debugLog && GenTicks.TicksGame % 500 == 0)
                 {
@@ -28,10 +29,13 @@ namespace CRC_Reintegrated
                     Log.Message("Armoury Points(post-curve) for map " + labelCap + ": " + num1);
                 }
 
-                var x = (float)(__instance.wealthWatcher.WealthBuildings * (double)CRC_Loader.settings.percentOfValueForBuildings / 100.0);
+                var x = (float) (__instance.wealthWatcher.WealthBuildings *
+                    (double) CRC_Loader.settings.percentOfValueForBuildings / 100.0);
                 if (CRC_Loader.settings.debugLog && GenTicks.TicksGame % 500 == 0)
                 {
-                    Log.Message("Building Points(pre-curve) for map " + labelCap + ": " + __instance.wealthWatcher.WealthBuildings + "(at " + CRC_Loader.settings.percentOfValueForBuildings + "%)");
+                    Log.Message("Building Points(pre-curve) for map " + labelCap + ": " +
+                                __instance.wealthWatcher.WealthBuildings + "(at " +
+                                CRC_Loader.settings.percentOfValueForBuildings + "%)");
                 }
 
                 num2 = MarvsStoryTellerUtility.PointsPerWealthCurve.Evaluate(x);
@@ -40,6 +44,7 @@ namespace CRC_Reintegrated
                     Log.Message("Building Points(post-curve) for map " + labelCap + ": " + num2);
                 }
             }
+
             __result = num1 + num2;
             return false;
         }
