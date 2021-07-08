@@ -84,7 +84,7 @@ namespace CRC_Reintegrated
             }
 
             return Mathf.Clamp(num5, GlobalMinPoints,
-                Find.Storyteller.difficulty.isExtreme ? GlobalMaxPointsMercilesss : GlobalMaxPoints);
+                Find.Storyteller.difficulty.allowBigThreats ? GlobalMaxPointsMercilesss : GlobalMaxPoints);
         }
     }
 }

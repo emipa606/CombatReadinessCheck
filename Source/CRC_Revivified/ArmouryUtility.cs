@@ -34,7 +34,7 @@ namespace CRC_Reintegrated
                 var outThings1 = new List<Thing>();
                 ThingOwnerUtility.GetAllThingsRecursively(map, ThingRequest.ForGroup(ThingRequestGroup.Apparel),
                     outThings1, false,
-                    x => !(x is PassingShip) && !(x is MapComponent) &&
+                    x => !(x is PassingShip) &&
                          (!(x is Pawn pawn) || pawn.Faction == Faction.OfPlayer));
                 foreach (var thing in outThings1)
                 {
@@ -50,7 +50,7 @@ namespace CRC_Reintegrated
                 var outThings2 = new List<Thing>();
                 ThingOwnerUtility.GetAllThingsRecursively(map, ThingRequest.ForGroup(ThingRequestGroup.Weapon),
                     outThings2, false,
-                    x => !(x is PassingShip) && !(x is MapComponent) &&
+                    x => !(x is PassingShip) &&
                          (!(x is Pawn pawn) || pawn.Faction == Faction.OfPlayer));
                 foreach (var thing in outThings2)
                 {
