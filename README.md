@@ -1,6 +1,6 @@
 # CombatReadinessCheck
 
-![Image](https://i.imgur.com/WAEzk68.png)
+![Image](https://i.imgur.com/buuPQel.png)
 
 Update of MarvinKoshs mod
 https://steamcommunity.com/sharedfiles/filedetails/?id=1542424263
@@ -9,25 +9,16 @@ with permission.
 - Update work by Craze
 - Added option to treat pre-industrial armors the same as pre-industrial weapons
 
-![Image](https://i.imgur.com/7Gzt3Rg.png)
+![Image](https://i.imgur.com/pufA0kM.png)
 
-
-[table]
-    [tr]
-        [td]https://invite.gg/Mlie]![Image](https://i.imgur.com/zdzzBrc.png)
-[/td]
-        [td]https://github.com/emipa606/CombatReadinessCheck]![Image](https://i.imgur.com/kTkpTOE.png)
-[/td]
-    [/tr]
-[/table]
 	
-![Image](https://i.imgur.com/NOW7jU1.png)
+![Image](https://i.imgur.com/Z4GOv8H.png)
 
 Alters the normal threat points calculation.
 
-Threat points are used by the storyteller to, for example, &apos;buy&apos; raiders from a list to make up the next group that will raid your colony or ambush one of your caravans.
+Threat points are used by the storyteller to, for example, 'buy' raiders from a list to make up the next group that will raid your colony or ambush one of your caravans.
 
-You can use the in-game Mod Settings menu to adjust some of the settings for how points are generated. Select Combat Readiness Check, and edit the values. They will stay in effect as long as you&apos;re using the same saved game folder.
+You can use the in-game Mod Settings menu to adjust some of the settings for how points are generated. Select Combat Readiness Check, and edit the values. They will stay in effect as long as you're using the same saved game folder.
 
 A debug option is available in the mod settings menu. This will output the current armoury points and building points to the log. Colonist points are also logged, but only if you turn on Write Storyteller in development mode.
 
@@ -45,7 +36,7 @@ A debug option is available in the mod settings menu. This will output the curre
 
 ### Animals
 
-Animals which have release training count for 9% of their combat strength (vanilla: similar percentage, but all animals that could be trained, even if they aren&apos;t trained).
+Animals which have release training count for 9% of their combat strength (vanilla: similar percentage, but all animals that could be trained, even if they aren't trained).
 
 ### Colonist calculation
 
@@ -55,8 +46,8 @@ Animals which have release training count for 9% of their combat strength (vanil
 -  Colonists who have impairment to their combat abilities (consciousness, manipulation, sight) will count for less points.
 -  Colonists with limited movement capability or a limited combined combat ability will count for zero points. 
 -  Colonists in cryptosleep will count for zero points.
--  Colonists who can&apos;t fight at all will count for zero points.
--  Colonists who are suffering from an infection or disease which needs bed rest will count for zero points if they haven&apos;t developed immunity. 
+-  Colonists who can't fight at all will count for zero points.
+-  Colonists who are suffering from an infection or disease which needs bed rest will count for zero points if they haven't developed immunity. 
 -  Colonists who have enhanced capabilities (from bionics, trauma savant, mechanites or drugs) can count slightly more.
 
 
@@ -75,7 +66,7 @@ There is a global maximum of 10000 points or 20000 for Merciless difficulty (van
 
 
 
-- Includes &apos;Adaptation and Random Threat Point Multipliers Cap to One&apos; which changes the adaptation and random raid factors so that they cap at 1, reducing the effect of those factors.
+- Includes 'Adaptation and Random Threat Point Multipliers Cap to One' which changes the adaptation and random raid factors so that they cap at 1, reducing the effect of those factors.
 - Added buttons to change between a few default settings - Fair, This is fine, Feels bad man, Pain train.
 - Extended the max range of possible adjustment to 800% for percentage settings.
 
@@ -86,7 +77,7 @@ There is a global maximum of 10000 points or 20000 for Merciless difficulty (van
 
 **Please ask me before re-uploading this mod.**
 
-## Don&apos;t comment asking when the mod will update.
+## Don't comment asking when the mod will update.
 
 
 Comments regarding mod updates have become a nuisance. I can understand that people get excited and post before they think or read, but I have https://twitter.com/marvinkosh]social media, go and check there to see if I have posted about RimWorld. You will be saving me a lot of time.
@@ -100,7 +91,7 @@ Go to Ludeon Forums for more information and direct download links: https://lude
 
 If you like this mod, why not consider looking at some of my http://steamcommunity.com/id/marvinkosh/myworkshopfiles/?appid=294100]other mods?
 
-![Image](https://i.imgur.com/Rs6T6cr.png)
+![Image](https://i.imgur.com/PwoNOj4.png)
 
 
 
@@ -110,5 +101,6 @@ If you like this mod, why not consider looking at some of my http://steamcommuni
 -  For best support, please use the Discord-channel for error-reporting.
 -  Do not report errors by making a discussion-thread, I get no notification of that.
 -  If you have the solution for a problem, please post it to the GitHub repository.
+
 
 
