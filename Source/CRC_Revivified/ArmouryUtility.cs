@@ -13,89 +13,88 @@ public static class ArmouryUtility
 
     public static void GetStorytellerArmouryPoints(IIncidentTarget target, out float armouryPoints)
     {
-        if (!(target is Map map))
+        if (target is not Map map)
         {
             armouryPoints = 0.0f;
+            return;
+        }
+
+        if (!tickOfLastCacheUpdate.ContainsKey(map))
+        {
+            tickOfLastCacheUpdate.Add(map, GenTicks.TicksGame);
+        }
+        else if (cachedStorytellerArmouryPoints.ContainsKey(map) &&
+                 GenTicks.TicksGame < tickOfLastCacheUpdate[map] + ArmouryPointsUpdateInterval)
+        {
+            armouryPoints = cachedStorytellerArmouryPoints[map];
+            return;
+        }
+
+        var num = 0.0f;
+        var outThings1 = new List<Thing>();
+        ThingOwnerUtility.GetAllThingsRecursively(map, ThingRequest.ForGroup(ThingRequestGroup.Apparel),
+            outThings1, false,
+            x => x is not PassingShip &&
+                 (x is not Pawn pawn || pawn.Faction == Faction.OfPlayer));
+        foreach (var thing in outThings1)
+        {
+            if (thing.SpawnedOrAnyParentSpawned && !thing.Position.Fogged(map) &&
+                thing.GetStatValue(StatDefOf.ArmorRating_Sharp) >
+                (ModLister.HasActiveModWithName("Combat Extended") ? 4.0 : 0.389999985694885))
+            {
+                num += (float)(thing.MarketValue * (double)CRC_Loader.settings.percentOfValueForArmour /
+                               100.0);
+            }
+        }
+
+        var outThings2 = new List<Thing>();
+        ThingOwnerUtility.GetAllThingsRecursively(map, ThingRequest.ForGroup(ThingRequestGroup.Weapon),
+            outThings2, false,
+            x => x is not PassingShip &&
+                 (x is not Pawn pawn || pawn.Faction == Faction.OfPlayer));
+        foreach (var thing in outThings2)
+        {
+            if (!thing.SpawnedOrAnyParentSpawned || thing.Position.Fogged(map))
+            {
+                continue;
+            }
+
+            if (thing.def.techLevel >= TechLevel.Industrial)
+            {
+                num += (float)(thing.MarketValue *
+                    (double)CRC_Loader.settings.percentOfValueForIndustrialWeapons / 100.0);
+            }
+            else
+            {
+                num += (float)(thing.MarketValue *
+                    (double)CRC_Loader.settings.percentOfValueForPreIndustrialWeapons / 100.0);
+            }
+        }
+
+        armouryPoints = num;
+        if (tickOfLastCacheUpdate.ContainsKey(map))
+        {
+            tickOfLastCacheUpdate[map] = GenTicks.TicksGame;
         }
         else
         {
-            if (!tickOfLastCacheUpdate.ContainsKey(map))
-            {
-                tickOfLastCacheUpdate.Add(map, GenTicks.TicksGame);
-            }
-            else if (cachedStorytellerArmouryPoints.ContainsKey(map) &&
-                     GenTicks.TicksGame < tickOfLastCacheUpdate[map] + ArmouryPointsUpdateInterval)
-            {
-                armouryPoints = cachedStorytellerArmouryPoints[map];
-                return;
-            }
+            Log.Warning($"tickOfLastCacheUpdate did not contain {map}");
+        }
 
-            var num = 0.0f;
-            var outThings1 = new List<Thing>();
-            ThingOwnerUtility.GetAllThingsRecursively(map, ThingRequest.ForGroup(ThingRequestGroup.Apparel),
-                outThings1, false,
-                x => !(x is PassingShip) &&
-                     (!(x is Pawn pawn) || pawn.Faction == Faction.OfPlayer));
-            foreach (var thing in outThings1)
-            {
-                if (thing.SpawnedOrAnyParentSpawned && !thing.Position.Fogged(map) &&
-                    thing.GetStatValue(StatDefOf.ArmorRating_Sharp) >
-                    (ModLister.HasActiveModWithName("Combat Extended") ? 4.0 : 0.389999985694885))
-                {
-                    num += (float)(thing.MarketValue * (double)CRC_Loader.settings.percentOfValueForArmour /
-                                   100.0);
-                }
-            }
+        if (cachedStorytellerArmouryPoints.ContainsKey(map))
+        {
+            cachedStorytellerArmouryPoints[map] = armouryPoints;
+        }
+        else
+        {
+            cachedStorytellerArmouryPoints.Add(map, armouryPoints);
+        }
 
-            var outThings2 = new List<Thing>();
-            ThingOwnerUtility.GetAllThingsRecursively(map, ThingRequest.ForGroup(ThingRequestGroup.Weapon),
-                outThings2, false,
-                x => !(x is PassingShip) &&
-                     (!(x is Pawn pawn) || pawn.Faction == Faction.OfPlayer));
-            foreach (var thing in outThings2)
+        foreach (var key in cachedStorytellerArmouryPoints.Keys)
+        {
+            if (key == null)
             {
-                if (!thing.SpawnedOrAnyParentSpawned || thing.Position.Fogged(map))
-                {
-                    continue;
-                }
-
-                if (thing.def.techLevel >= TechLevel.Industrial)
-                {
-                    num += (float)(thing.MarketValue *
-                        (double)CRC_Loader.settings.percentOfValueForIndustrialWeapons / 100.0);
-                }
-                else
-                {
-                    num += (float)(thing.MarketValue *
-                        (double)CRC_Loader.settings.percentOfValueForPreIndustrialWeapons / 100.0);
-                }
-            }
-
-            armouryPoints = num;
-            if (tickOfLastCacheUpdate.ContainsKey(map))
-            {
-                tickOfLastCacheUpdate[map] = GenTicks.TicksGame;
-            }
-            else
-            {
-                Log.Warning("tickOfLastCacheUpdate did not contain " + map);
-            }
-
-            if (cachedStorytellerArmouryPoints.ContainsKey(map))
-            {
-                cachedStorytellerArmouryPoints[map] = armouryPoints;
-            }
-            else
-            {
-                cachedStorytellerArmouryPoints.Add(map, armouryPoints);
-            }
-
-            foreach (var key in cachedStorytellerArmouryPoints.Keys)
-            {
-                if (key == null)
-                {
-                    cachedStorytellerArmouryPoints.Remove(key);
-                }
+                cachedStorytellerArmouryPoints.Remove(key);
             }
         }
     }

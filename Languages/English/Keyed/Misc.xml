@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <CRC.ModVersion>Installed mod-version: {0}</CRC.ModVersion>
+  <CRC.SettingPointsPerColonist>Base threat points per colonist</CRC.SettingPointsPerColonist>
+  <CRC.SettingPercentBuildingWealth>Percentage of building wealth used</CRC.SettingPercentBuildingWealth>
+  <CRC.SettingPercentArmour>Percentage of value used for armour</CRC.SettingPercentArmour>
+  <CRC.SettingPercentIndustrialWeapons>Percentage of value used for industrial weapons or better</CRC.SettingPercentIndustrialWeapons>
+  <CRC.SettingPercentPreIndustrialWeapons>Percentage of value used for pre-industrial weapons</CRC.SettingPercentPreIndustrialWeapons>
+  <CRC.SettingPercentReleaseableAnimalPower>Percentage of combat animal strength to use</CRC.SettingPercentReleaseableAnimalPower>
+  <CRC.SettingDebugLogging>Show debug output in log</CRC.SettingDebugLogging>
+  <CRC.SettingPreIndustrialArmor>Use pre-industrial weapon percent also for pre-industrial armors</CRC.SettingPreIndustrialArmor>
+  <CRC.SettingFair>Fair</CRC.SettingFair>
+  <CRC.SettingThisIsFine>This is fine</CRC.SettingThisIsFine>
+  <CRC.SettingFeelsBadMan>Feels bad man</CRC.SettingFeelsBadMan>
+  <CRC.SettingPainTrain>Pain train</CRC.SettingPainTrain>
+</LanguageData>

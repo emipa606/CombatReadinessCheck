@@ -63,8 +63,8 @@ public static class MarvsStoryTellerUtility
         var num3 = num1 + (colonistPoints * num2);
         if (CRC_Loader.settings.debugLog && GenTicks.TicksGame % 500 == 0)
         {
-            Log.Message("Adapted Colonist Points for " + target + ": " + (float)(colonistPoints * (double)num2) +
-                        "(adaptation factor: " + Find.Storyteller.difficulty.adaptationEffectFactor + ")");
+            Log.Message(
+                $"Adapted Colonist Points for {target}: {(float)(colonistPoints * (double)num2)}(adaptation factor: {Find.Storyteller.difficulty.adaptationEffectFactor})");
         }
 
         var x = num3 * target.IncidentPointsRandomFactorRange.RandomInRange;
@@ -72,15 +72,14 @@ public static class MarvsStoryTellerUtility
         var num4 = Find.Storyteller.def.pointsFactorFromDaysPassed.Evaluate(GenDate.DaysPassed);
         if (CRC_Loader.settings.debugLog && GenTicks.TicksGame % 500 == 0)
         {
-            Log.Message("Random factor for " + target + ": " +
-                        target.IncidentPointsRandomFactorRange.RandomInRange + ", Threat scale: " + threatScale +
-                        ", Point factor from days passed: " + num4);
+            Log.Message(
+                $"Random factor for {target}: {target.IncidentPointsRandomFactorRange.RandomInRange}, Threat scale: {threatScale}, Point factor from days passed: {num4}");
         }
 
         var num5 = PointsCurve.Evaluate(x) * threatScale * num4;
         if (CRC_Loader.settings.debugLog && GenTicks.TicksGame % 500 == 0)
         {
-            Log.Message("Unclamped Points for " + target + ": " + num5);
+            Log.Message($"Unclamped Points for {target}: {num5}");
         }
 
         return Mathf.Clamp(num5, GlobalMinPoints,

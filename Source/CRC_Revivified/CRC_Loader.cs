@@ -10,24 +10,8 @@ namespace CRC_Reintegrated;
 internal class CRC_Loader : Mod
 {
     private const string ModName = "Combat Readiness Check";
-    private const string SettingPointsPerColonist = "Base threat points per colonist";
-    private const string SettingPercentBuildingWealth = "Percentage of building wealth used";
-    private const string SettingPercentArmour = "Percentage of value used for armour";
 
-    private const string SettingPercentIndustrialWeapons =
-        "Percentage of value used for industrial weapons or better";
 
-    private const string SettingPercentPreIndustrialWeapons = "Percentage of value used for pre-industrial weapons";
-    private const string SettingPercentReleaseableAnimalPower = "Percentage of combat animal strength to use";
-    private const string SettingDebugLogging = "Show debug output in log";
-
-    private const string SettingPreIndustrialArmor =
-        "Use pre-industrial weapon percent also for pre-industrial armors";
-
-    private const string SettingFair = "Fair";
-    private const string SettingThisIsFine = "This is fine";
-    private const string SettingFeelsBadMan = "Feels bad man";
-    private const string SettingPainTrain = "Pain train";
     public static CRC_Settings settings;
     private static Harmony harmony;
 
@@ -56,10 +40,9 @@ internal class CRC_Loader : Mod
         {
             ColumnWidth = inRect.width / 3f
         };
-        var listingStandard2 = listingStandard1;
-        listingStandard2.Begin(inRect);
-        listingStandard2.ColumnWidth = inRect.width / 2;
-        if (listingStandard2.ButtonText(SettingFair))
+        listingStandard1.Begin(inRect);
+        listingStandard1.ColumnWidth = inRect.width / 2.1f;
+        if (listingStandard1.ButtonText("CRC.SettingFair".Translate()))
         {
             settings.numPointsPerColonist = 45;
             settings.percentOfValueForBuildings = 25f;
@@ -70,7 +53,7 @@ internal class CRC_Loader : Mod
             RefreshBuffer();
         }
 
-        if (listingStandard2.ButtonText(SettingThisIsFine))
+        if (listingStandard1.ButtonText("CRC.SettingThisIsFine".Translate()))
         {
             settings.numPointsPerColonist = 85;
             settings.percentOfValueForBuildings = 50f;
@@ -81,7 +64,7 @@ internal class CRC_Loader : Mod
             RefreshBuffer();
         }
 
-        if (listingStandard2.ButtonText(SettingFeelsBadMan))
+        if (listingStandard1.ButtonText("CRC.SettingFeelsBadMan".Translate()))
         {
             settings.numPointsPerColonist = 125;
             settings.percentOfValueForBuildings = 75f;
@@ -92,7 +75,7 @@ internal class CRC_Loader : Mod
             RefreshBuffer();
         }
 
-        if (listingStandard2.ButtonText(SettingPainTrain))
+        if (listingStandard1.ButtonText("CRC.SettingPainTrain".Translate()))
         {
             settings.numPointsPerColonist = 165;
             settings.percentOfValueForBuildings = 100f;
@@ -103,47 +86,48 @@ internal class CRC_Loader : Mod
             RefreshBuffer();
         }
 
-        listingStandard2.Gap();
-        listingStandard2.CheckboxLabeled(SettingPreIndustrialArmor, ref settings.preIndustrialArmor);
-        listingStandard2.Gap();
-        listingStandard2.CheckboxLabeled(SettingDebugLogging, ref settings.debugLog);
+        listingStandard1.Gap();
+        listingStandard1.CheckboxLabeled("CRC.SettingPreIndustrialArmor".Translate(), ref settings.preIndustrialArmor,
+            null, 50f);
+        listingStandard1.Gap();
+        listingStandard1.CheckboxLabeled("CRC.SettingDebugLogging".Translate(), ref settings.debugLog);
         if (currentVersion != null)
         {
-            listingStandard2.Gap();
+            listingStandard1.Gap();
             GUI.contentColor = Color.gray;
-            listingStandard2.Label($"Installed mod-version: {currentVersion}");
+            listingStandard1.Label("CRC.ModVersion".Translate(currentVersion));
             GUI.contentColor = Color.white;
         }
 
-        listingStandard2.NewColumn();
+        listingStandard1.NewColumn();
         RefreshBuffer();
-        listingStandard2.Label(SettingPointsPerColonist);
+        listingStandard1.Label("CRC.SettingPointsPerColonist".Translate());
         string numInputBuffer1;
-        listingStandard2.TextFieldNumeric(ref settings.numPointsPerColonist, ref numInputBuffer1, 1f, 1000f);
-        listingStandard2.Gap();
-        listingStandard2.Label(SettingPercentBuildingWealth);
+        listingStandard1.TextFieldNumeric(ref settings.numPointsPerColonist, ref numInputBuffer1, 1f, 1000f);
+        listingStandard1.Gap();
+        listingStandard1.Label("CRC.SettingPercentBuildingWealth".Translate());
         string numInputBuffer2;
-        listingStandard2.TextFieldNumeric(ref settings.percentOfValueForBuildings, ref numInputBuffer2, max: 800f);
-        listingStandard2.Gap();
-        listingStandard2.Label(SettingPercentArmour);
+        listingStandard1.TextFieldNumeric(ref settings.percentOfValueForBuildings, ref numInputBuffer2, max: 800f);
+        listingStandard1.Gap();
+        listingStandard1.Label("CRC.SettingPercentArmour".Translate());
         string numInputBuffer6;
-        listingStandard2.TextFieldNumeric(ref settings.percentOfValueForArmour, ref numInputBuffer6, max: 800f);
-        listingStandard2.Gap();
-        listingStandard2.Label(SettingPercentIndustrialWeapons);
+        listingStandard1.TextFieldNumeric(ref settings.percentOfValueForArmour, ref numInputBuffer6, max: 800f);
+        listingStandard1.Gap();
+        listingStandard1.Label("CRC.SettingPercentIndustrialWeapons".Translate());
         string numInputBuffer3;
-        listingStandard2.TextFieldNumeric(ref settings.percentOfValueForIndustrialWeapons, ref numInputBuffer3,
+        listingStandard1.TextFieldNumeric(ref settings.percentOfValueForIndustrialWeapons, ref numInputBuffer3,
             max: 800f);
-        listingStandard2.Gap();
-        listingStandard2.Label(SettingPercentPreIndustrialWeapons);
+        listingStandard1.Gap();
+        listingStandard1.Label("CRC.SettingPercentPreIndustrialWeapons".Translate());
         string numInputBuffer4;
-        listingStandard2.TextFieldNumeric(ref settings.percentOfValueForPreIndustrialWeapons, ref numInputBuffer4,
+        listingStandard1.TextFieldNumeric(ref settings.percentOfValueForPreIndustrialWeapons, ref numInputBuffer4,
             max: 800f);
-        listingStandard2.Gap();
-        listingStandard2.Label(SettingPercentReleaseableAnimalPower);
+        listingStandard1.Gap();
+        listingStandard1.Label("CRC.SettingPercentReleaseableAnimalPower".Translate());
         string numInputBuffer5;
-        listingStandard2.TextFieldNumeric(ref settings.percentOfCombatPowerForReleasableAnimals,
+        listingStandard1.TextFieldNumeric(ref settings.percentOfCombatPowerForReleasableAnimals,
             ref numInputBuffer5, max: 800f);
-        listingStandard2.End();
+        listingStandard1.End();
 
         void RefreshBuffer()
         {
