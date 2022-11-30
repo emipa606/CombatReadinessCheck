@@ -257,6 +257,11 @@ public static class ArmouryUtility
                         (double)colonist.kindDef.combatPower / 100.0) * num3;
                 }
             }
+            else if (colonist.IsColonyMech && !colonist.Downed)
+            {
+                num1 += (float)(CRC_Loader.settings.percentOfCombatPowerForColonyMechs *
+                    (double)colonist.kindDef.combatPower / 100.0) * num3;
+            }
             else if (!colonist.WorkTagIsDisabled(WorkTags.Violent) &&
                      colonist.health.capacities.GetLevel(PawnCapacityDefOf.Moving) >= 0.15)
             {

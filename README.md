@@ -1,5 +1,6 @@
 # CombatReadinessCheck
 
+
 ![Image](https://i.imgur.com/buuPQel.png)
 
 Update of MarvinKoshs mod
@@ -104,4 +105,4 @@ If you like this mod, why not consider looking at some of my http://steamcommuni
 
 
 
-
+https://steamcommunity.com/sharedfiles/filedetails/changelog/2314304057]Last updated 2022-11-30

@@ -7,6 +7,7 @@
   <CRC.SettingPercentIndustrialWeapons>Percentage of value used for industrial weapons or better</CRC.SettingPercentIndustrialWeapons>
   <CRC.SettingPercentPreIndustrialWeapons>Percentage of value used for pre-industrial weapons</CRC.SettingPercentPreIndustrialWeapons>
   <CRC.SettingPercentReleaseableAnimalPower>Percentage of combat animal strength to use</CRC.SettingPercentReleaseableAnimalPower>
+  <CRC.SettingPercentColonyMechsPower>Percentage of colony mechanoids strength to use</CRC.SettingPercentColonyMechsPower>
   <CRC.SettingDebugLogging>Show debug output in log</CRC.SettingDebugLogging>
   <CRC.SettingPreIndustrialArmor>Use pre-industrial weapon percent also for pre-industrial armors</CRC.SettingPreIndustrialArmor>
   <CRC.SettingFair>Fair</CRC.SettingFair>

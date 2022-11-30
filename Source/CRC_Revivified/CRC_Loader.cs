@@ -50,6 +50,7 @@ internal class CRC_Loader : Mod
             settings.percentOfValueForIndustrialWeapons = 100f;
             settings.percentOfValueForPreIndustrialWeapons = 25f;
             settings.percentOfCombatPowerForReleasableAnimals = 9f;
+            settings.percentOfCombatPowerForColonyMechs = 27f;
             RefreshBuffer();
         }
 
@@ -61,6 +62,7 @@ internal class CRC_Loader : Mod
             settings.percentOfValueForIndustrialWeapons = 200f;
             settings.percentOfValueForPreIndustrialWeapons = 50f;
             settings.percentOfCombatPowerForReleasableAnimals = 18f;
+            settings.percentOfCombatPowerForColonyMechs = 54f;
             RefreshBuffer();
         }
 
@@ -72,6 +74,7 @@ internal class CRC_Loader : Mod
             settings.percentOfValueForIndustrialWeapons = 250f;
             settings.percentOfValueForPreIndustrialWeapons = 65f;
             settings.percentOfCombatPowerForReleasableAnimals = 27f;
+            settings.percentOfCombatPowerForColonyMechs = 81f;
             RefreshBuffer();
         }
 
@@ -83,6 +86,7 @@ internal class CRC_Loader : Mod
             settings.percentOfValueForIndustrialWeapons = 300f;
             settings.percentOfValueForPreIndustrialWeapons = 75f;
             settings.percentOfCombatPowerForReleasableAnimals = 36f;
+            settings.percentOfCombatPowerForColonyMechs = 108f;
             RefreshBuffer();
         }
 
@@ -127,6 +131,15 @@ internal class CRC_Loader : Mod
         string numInputBuffer5;
         listingStandard1.TextFieldNumeric(ref settings.percentOfCombatPowerForReleasableAnimals,
             ref numInputBuffer5, max: 800f);
+        string numInputBuffer7;
+        if (ModLister.BiotechInstalled)
+        {
+            listingStandard1.Gap();
+            listingStandard1.Label("CRC.SettingPercentColonyMechsPower".Translate());
+            listingStandard1.TextFieldNumeric(ref settings.percentOfCombatPowerForColonyMechs,
+                ref numInputBuffer7, max: 800f);
+        }
+
         listingStandard1.End();
 
         void RefreshBuffer()
@@ -137,6 +150,7 @@ internal class CRC_Loader : Mod
             numInputBuffer3 = settings.percentOfValueForIndustrialWeapons.ToString();
             numInputBuffer4 = settings.percentOfValueForPreIndustrialWeapons.ToString();
             numInputBuffer5 = settings.percentOfCombatPowerForReleasableAnimals.ToString();
+            numInputBuffer7 = settings.percentOfCombatPowerForColonyMechs.ToString();
         }
     }
 
@@ -219,6 +233,7 @@ internal class CRC_Loader : Mod
     {
         public bool debugLog;
         public int numPointsPerColonist = 45;
+        public float percentOfCombatPowerForColonyMechs = 27f;
         public float percentOfCombatPowerForReleasableAnimals = 9f;
         public float percentOfValueForArmour = 100f;
         public float percentOfValueForBuildings = 25f;
@@ -237,6 +252,8 @@ internal class CRC_Loader : Mod
                 25f, true);
             Scribe_Values.Look(ref percentOfCombatPowerForReleasableAnimals, "percent_Value_For_ReleasableAnimals",
                 9f, true);
+            Scribe_Values.Look(ref percentOfCombatPowerForColonyMechs, "percent_Value_For_ColonyMechs",
+                27f, true);
             Scribe_Values.Look(ref debugLog, "shouldLogDebugInfo", forceSave: true);
             Scribe_Values.Look(ref preIndustrialArmor, "preIndustrialArmor");
         }
