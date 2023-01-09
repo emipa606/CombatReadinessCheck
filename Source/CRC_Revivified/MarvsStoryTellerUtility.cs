@@ -50,6 +50,11 @@ public static class MarvsStoryTellerUtility
     public static bool Prefix(IIncidentTarget target, ref float __result)
     {
         __result = CombatReadinessPoints(target);
+        if (CRC_Loader.settings.debugLog && GenTicks.TicksGame % 500 == 0)
+        {
+            Log.Message($"Recalculated incident-points to {__result}");
+        }
+
         return false;
     }
 
