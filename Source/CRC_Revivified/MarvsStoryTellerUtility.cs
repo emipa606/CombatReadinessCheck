@@ -62,12 +62,20 @@ public static class MarvsStoryTellerUtility
     {
         ArmouryUtility.GetColonistArmouryPoints(target.PlayerPawnsForStoryteller, target, out var colonistPoints,
             out var caravanArmouryWealth);
-        var num1 = PointsPerWealthCurve.Evaluate(caravanArmouryWealth) + target.PlayerWealthForStoryteller;
+
+        var caravanArmouryPoints = PointsPerWealthCurve.Evaluate(caravanArmouryWealth);
+        var playerWealth = target.PlayerWealthForStoryteller;
+        var playerWealthPoints = PointsPerWealthCurve.Evaluate(playerWealth / 2f) * 2f;
+        var num1 = caravanArmouryPoints + playerWealthPoints;
         var num2 = Mathf.Lerp(1f, Find.StoryWatcher.watcherAdaptation.TotalThreatPointsFactor,
             Find.Storyteller.difficulty.adaptationEffectFactor);
         var num3 = num1 + (colonistPoints * num2);
         if (CRC_Loader.settings.debugLog && GenTicks.TicksGame % 500 == 0)
         {
+            Log.Message(
+                $"Adapted caravan armoury points for {target}: {caravanArmouryPoints} from caravan wealth {caravanArmouryWealth}");
+            Log.Message(
+                $"Adapted player wealth points for {target}: {playerWealthPoints} from player wealth {playerWealth}");
             Log.Message(
                 $"Adapted Colonist Points for {target}: {(float)(colonistPoints * (double)num2)}(adaptation factor: {Find.Storyteller.difficulty.adaptationEffectFactor})");
         }

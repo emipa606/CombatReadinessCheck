@@ -1,5 +1,8 @@
 # Changelog for CombatReadinessCheck
 
+1.4.4 - Updated fix for the raid-points, thanks to Cardds
+
+
 1.4.3 - Fixed the colony wealth-check, thanks Cardds for the info
 
 
