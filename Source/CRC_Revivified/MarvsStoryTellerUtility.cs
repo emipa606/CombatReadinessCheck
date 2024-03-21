@@ -10,8 +10,8 @@ public static class MarvsStoryTellerUtility
     private const float GlobalMaxPointsMercilesss = 20000f;
     private const float GlobalMinPoints = 35f;
 
-    public static readonly SimpleCurve PointsPerWealthCurve = new SimpleCurve
-    {
+    public static readonly SimpleCurve PointsPerWealthCurve =
+    [
         new CurvePoint(0.0f, 0.0f),
         new CurvePoint(100f, 0.0f),
         new CurvePoint(1000f, 90f),
@@ -26,10 +26,10 @@ public static class MarvsStoryTellerUtility
         new CurvePoint(700000f, 3600f),
         new CurvePoint(800000f, 3800f),
         new CurvePoint(900000f, 3900f)
-    };
+    ];
 
-    private static readonly SimpleCurve PointsCurve = new SimpleCurve
-    {
+    private static readonly SimpleCurve PointsCurve =
+    [
         new CurvePoint(0.0f, 35f),
         new CurvePoint(100f, 35f),
         new CurvePoint(200f, 80f),
@@ -45,7 +45,7 @@ public static class MarvsStoryTellerUtility
         new CurvePoint(15000f, 4100f),
         new CurvePoint(21000f, 7500f),
         new CurvePoint(27000f, 7700f)
-    };
+    ];
 
     public static bool Prefix(IIncidentTarget target, ref float __result)
     {

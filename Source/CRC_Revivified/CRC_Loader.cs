@@ -21,8 +21,7 @@ internal class CRC_Loader : Mod
     {
         harmony = new Harmony("net.marvinkosh.rimworld.mod.combatreadinesscheck");
         currentVersion =
-            VersionFromManifest.GetVersionFromModMetaData(
-                ModLister.GetActiveModWithIdentifier("Mlie.CombatReadinessCheck"));
+            VersionFromManifest.GetVersionFromModMetaData(content.ModMetaData);
         settings = GetSettings<CRC_Settings>();
         PatchMap();
         PatchCaravan();
@@ -141,6 +140,7 @@ internal class CRC_Loader : Mod
         }
 
         listingStandard1.End();
+        return;
 
         void RefreshBuffer()
         {

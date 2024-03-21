@@ -19,12 +19,12 @@ public static class ArmouryUtility
             return;
         }
 
-        if (!tickOfLastCacheUpdate.ContainsKey(map))
+        if (!tickOfLastCacheUpdate.TryGetValue(map, out var value))
         {
             tickOfLastCacheUpdate.Add(map, GenTicks.TicksGame);
         }
         else if (cachedStorytellerArmouryPoints.ContainsKey(map) &&
-                 GenTicks.TicksGame < tickOfLastCacheUpdate[map] + ArmouryPointsUpdateInterval)
+                 GenTicks.TicksGame < value + ArmouryPointsUpdateInterval)
         {
             armouryPoints = cachedStorytellerArmouryPoints[map];
             return;
@@ -81,14 +81,7 @@ public static class ArmouryUtility
             Log.Warning($"tickOfLastCacheUpdate did not contain {map}");
         }
 
-        if (cachedStorytellerArmouryPoints.ContainsKey(map))
-        {
-            cachedStorytellerArmouryPoints[map] = armouryPoints;
-        }
-        else
-        {
-            cachedStorytellerArmouryPoints.Add(map, armouryPoints);
-        }
+        cachedStorytellerArmouryPoints[map] = armouryPoints;
 
         foreach (var key in cachedStorytellerArmouryPoints.Keys)
         {
