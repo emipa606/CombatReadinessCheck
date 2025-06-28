@@ -1,0 +1,6 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Release" />
+  </Configurations>
+  <Project Path="CRC_Revivified/CRC_Revivified.csproj" />
+</Solution>

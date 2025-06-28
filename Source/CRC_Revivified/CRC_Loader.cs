@@ -12,7 +12,7 @@ internal class CRC_Loader : Mod
     private const string ModName = "Combat Readiness Check";
 
 
-    public static CRC_Settings settings;
+    public static CRC_Settings Settings;
     private static Harmony harmony;
 
     private static string currentVersion;
@@ -22,9 +22,9 @@ internal class CRC_Loader : Mod
         harmony = new Harmony("net.marvinkosh.rimworld.mod.combatreadinesscheck");
         currentVersion =
             VersionFromManifest.GetVersionFromModMetaData(content.ModMetaData);
-        settings = GetSettings<CRC_Settings>();
-        PatchMap();
-        PatchCaravan();
+        Settings = GetSettings<CRC_Settings>();
+        patchMap();
+        patchCaravan();
         PatchDefaultThreatPointsNow();
     }
 
@@ -43,57 +43,57 @@ internal class CRC_Loader : Mod
         listingStandard1.ColumnWidth = inRect.width / 2.1f;
         if (listingStandard1.ButtonText("CRC.SettingFair".Translate()))
         {
-            settings.numPointsPerColonist = 45;
-            settings.percentOfValueForBuildings = 25f;
-            settings.percentOfValueForArmour = 100f;
-            settings.percentOfValueForIndustrialWeapons = 100f;
-            settings.percentOfValueForPreIndustrialWeapons = 25f;
-            settings.percentOfCombatPowerForReleasableAnimals = 9f;
-            settings.percentOfCombatPowerForColonyMechs = 27f;
-            RefreshBuffer();
+            Settings.NumPointsPerColonist = 45;
+            Settings.PercentOfValueForBuildings = 25f;
+            Settings.PercentOfValueForArmour = 100f;
+            Settings.PercentOfValueForIndustrialWeapons = 100f;
+            Settings.PercentOfValueForPreIndustrialWeapons = 25f;
+            Settings.PercentOfCombatPowerForReleasableAnimals = 9f;
+            Settings.PercentOfCombatPowerForColonyMechs = 27f;
+            refreshBuffer();
         }
 
         if (listingStandard1.ButtonText("CRC.SettingThisIsFine".Translate()))
         {
-            settings.numPointsPerColonist = 85;
-            settings.percentOfValueForBuildings = 50f;
-            settings.percentOfValueForArmour = 200f;
-            settings.percentOfValueForIndustrialWeapons = 200f;
-            settings.percentOfValueForPreIndustrialWeapons = 50f;
-            settings.percentOfCombatPowerForReleasableAnimals = 18f;
-            settings.percentOfCombatPowerForColonyMechs = 54f;
-            RefreshBuffer();
+            Settings.NumPointsPerColonist = 85;
+            Settings.PercentOfValueForBuildings = 50f;
+            Settings.PercentOfValueForArmour = 200f;
+            Settings.PercentOfValueForIndustrialWeapons = 200f;
+            Settings.PercentOfValueForPreIndustrialWeapons = 50f;
+            Settings.PercentOfCombatPowerForReleasableAnimals = 18f;
+            Settings.PercentOfCombatPowerForColonyMechs = 54f;
+            refreshBuffer();
         }
 
         if (listingStandard1.ButtonText("CRC.SettingFeelsBadMan".Translate()))
         {
-            settings.numPointsPerColonist = 125;
-            settings.percentOfValueForBuildings = 75f;
-            settings.percentOfValueForArmour = 250f;
-            settings.percentOfValueForIndustrialWeapons = 250f;
-            settings.percentOfValueForPreIndustrialWeapons = 65f;
-            settings.percentOfCombatPowerForReleasableAnimals = 27f;
-            settings.percentOfCombatPowerForColonyMechs = 81f;
-            RefreshBuffer();
+            Settings.NumPointsPerColonist = 125;
+            Settings.PercentOfValueForBuildings = 75f;
+            Settings.PercentOfValueForArmour = 250f;
+            Settings.PercentOfValueForIndustrialWeapons = 250f;
+            Settings.PercentOfValueForPreIndustrialWeapons = 65f;
+            Settings.PercentOfCombatPowerForReleasableAnimals = 27f;
+            Settings.PercentOfCombatPowerForColonyMechs = 81f;
+            refreshBuffer();
         }
 
         if (listingStandard1.ButtonText("CRC.SettingPainTrain".Translate()))
         {
-            settings.numPointsPerColonist = 165;
-            settings.percentOfValueForBuildings = 100f;
-            settings.percentOfValueForArmour = 300f;
-            settings.percentOfValueForIndustrialWeapons = 300f;
-            settings.percentOfValueForPreIndustrialWeapons = 75f;
-            settings.percentOfCombatPowerForReleasableAnimals = 36f;
-            settings.percentOfCombatPowerForColonyMechs = 108f;
-            RefreshBuffer();
+            Settings.NumPointsPerColonist = 165;
+            Settings.PercentOfValueForBuildings = 100f;
+            Settings.PercentOfValueForArmour = 300f;
+            Settings.PercentOfValueForIndustrialWeapons = 300f;
+            Settings.PercentOfValueForPreIndustrialWeapons = 75f;
+            Settings.PercentOfCombatPowerForReleasableAnimals = 36f;
+            Settings.PercentOfCombatPowerForColonyMechs = 108f;
+            refreshBuffer();
         }
 
         listingStandard1.Gap();
-        listingStandard1.CheckboxLabeled("CRC.SettingPreIndustrialArmor".Translate(), ref settings.preIndustrialArmor,
+        listingStandard1.CheckboxLabeled("CRC.SettingPreIndustrialArmor".Translate(), ref Settings.PreIndustrialArmor,
             null, 50f);
         listingStandard1.Gap();
-        listingStandard1.CheckboxLabeled("CRC.SettingDebugLogging".Translate(), ref settings.debugLog);
+        listingStandard1.CheckboxLabeled("CRC.SettingDebugLogging".Translate(), ref Settings.DebugLog);
         if (currentVersion != null)
         {
             listingStandard1.Gap();
@@ -103,61 +103,59 @@ internal class CRC_Loader : Mod
         }
 
         listingStandard1.NewColumn();
-        RefreshBuffer();
+        refreshBuffer();
         listingStandard1.Label("CRC.SettingPointsPerColonist".Translate());
         string numInputBuffer1;
-        listingStandard1.TextFieldNumeric(ref settings.numPointsPerColonist, ref numInputBuffer1, 1f, 1000f);
+        listingStandard1.TextFieldNumeric(ref Settings.NumPointsPerColonist, ref numInputBuffer1, 1f, 1000f);
         listingStandard1.Gap();
         listingStandard1.Label("CRC.SettingPercentBuildingWealth".Translate());
         string numInputBuffer2;
-        listingStandard1.TextFieldNumeric(ref settings.percentOfValueForBuildings, ref numInputBuffer2, max: 800f);
+        listingStandard1.TextFieldNumeric(ref Settings.PercentOfValueForBuildings, ref numInputBuffer2, max: 800f);
         listingStandard1.Gap();
         listingStandard1.Label("CRC.SettingPercentArmour".Translate());
         string numInputBuffer6;
-        listingStandard1.TextFieldNumeric(ref settings.percentOfValueForArmour, ref numInputBuffer6, max: 800f);
+        listingStandard1.TextFieldNumeric(ref Settings.PercentOfValueForArmour, ref numInputBuffer6, max: 800f);
         listingStandard1.Gap();
         listingStandard1.Label("CRC.SettingPercentIndustrialWeapons".Translate());
         string numInputBuffer3;
-        listingStandard1.TextFieldNumeric(ref settings.percentOfValueForIndustrialWeapons, ref numInputBuffer3,
+        listingStandard1.TextFieldNumeric(ref Settings.PercentOfValueForIndustrialWeapons, ref numInputBuffer3,
             max: 800f);
         listingStandard1.Gap();
         listingStandard1.Label("CRC.SettingPercentPreIndustrialWeapons".Translate());
         string numInputBuffer4;
-        listingStandard1.TextFieldNumeric(ref settings.percentOfValueForPreIndustrialWeapons, ref numInputBuffer4,
+        listingStandard1.TextFieldNumeric(ref Settings.PercentOfValueForPreIndustrialWeapons, ref numInputBuffer4,
             max: 800f);
         listingStandard1.Gap();
         listingStandard1.Label("CRC.SettingPercentReleaseableAnimalPower".Translate());
         string numInputBuffer5;
-        listingStandard1.TextFieldNumeric(ref settings.percentOfCombatPowerForReleasableAnimals,
+        listingStandard1.TextFieldNumeric(ref Settings.PercentOfCombatPowerForReleasableAnimals,
             ref numInputBuffer5, max: 800f);
         string numInputBuffer7;
         if (ModLister.BiotechInstalled)
         {
             listingStandard1.Gap();
             listingStandard1.Label("CRC.SettingPercentColonyMechsPower".Translate());
-            listingStandard1.TextFieldNumeric(ref settings.percentOfCombatPowerForColonyMechs,
+            listingStandard1.TextFieldNumeric(ref Settings.PercentOfCombatPowerForColonyMechs,
                 ref numInputBuffer7, max: 800f);
         }
 
         listingStandard1.End();
         return;
 
-        void RefreshBuffer()
+        void refreshBuffer()
         {
-            numInputBuffer1 = settings.numPointsPerColonist.ToString();
-            numInputBuffer2 = settings.percentOfValueForBuildings.ToString();
-            numInputBuffer6 = settings.percentOfValueForArmour.ToString();
-            numInputBuffer3 = settings.percentOfValueForIndustrialWeapons.ToString();
-            numInputBuffer4 = settings.percentOfValueForPreIndustrialWeapons.ToString();
-            numInputBuffer5 = settings.percentOfCombatPowerForReleasableAnimals.ToString();
-            numInputBuffer7 = settings.percentOfCombatPowerForColonyMechs.ToString();
+            numInputBuffer1 = Settings.NumPointsPerColonist.ToString();
+            numInputBuffer2 = Settings.PercentOfValueForBuildings.ToString();
+            numInputBuffer6 = Settings.PercentOfValueForArmour.ToString();
+            numInputBuffer3 = Settings.PercentOfValueForIndustrialWeapons.ToString();
+            numInputBuffer4 = Settings.PercentOfValueForPreIndustrialWeapons.ToString();
+            numInputBuffer5 = Settings.PercentOfCombatPowerForReleasableAnimals.ToString();
+            numInputBuffer7 = Settings.PercentOfCombatPowerForColonyMechs.ToString();
         }
     }
 
-    private static void PatchMap()
+    private static void patchMap()
     {
-        //CRC_Loader.harmony = new Harmony("net.marvinkosh.rimworld.mod.combatreadinesscheck");
-        Log.Message("Combat Readiness Check: Trying to patch Map.PlayerWealthForStoryteller");
         var getMethod = AccessTools.Method(typeof(Map), "get_PlayerWealthForStoryteller");
         if (getMethod == null)
         {
@@ -166,7 +164,8 @@ internal class CRC_Loader : Mod
         }
         else
         {
-            var method = AccessTools.Method(typeof(MarvsMapWealthForStoryTeller), "Prefix");
+            var method = AccessTools.Method(typeof(MarvsMapWealthForStoryTeller),
+                nameof(MarvsMapWealthForStoryTeller.Prefix));
             if (method == null)
             {
                 Log.Warning("Got null method when attempting to load prefix.");
@@ -174,15 +173,12 @@ internal class CRC_Loader : Mod
             else
             {
                 harmony.Patch(getMethod, new HarmonyMethod(method));
-                Log.Message("Combat Readiness Check: Patched Map.PlayerWealthForStoryteller.");
             }
         }
     }
 
-    private static void PatchCaravan()
+    private static void patchCaravan()
     {
-        //CRC_Loader.harmony = new Harmony("net.marvinkosh.rimworld.mod.combatreadinesscheck");
-        Log.Message("Combat Readiness Check: Trying to patch Caravan.PlayerWealthForStoryteller");
         var getMethod = AccessTools.Method(typeof(Caravan), "get_PlayerWealthForStoryteller");
         if (getMethod == null)
         {
@@ -191,7 +187,8 @@ internal class CRC_Loader : Mod
         }
         else
         {
-            var method = AccessTools.Method(typeof(MarvsCaravanWealthForStoryTeller), "Prefix");
+            var method = AccessTools.Method(typeof(MarvsCaravanWealthForStoryTeller),
+                nameof(MarvsCaravanWealthForStoryTeller.Prefix));
             if (method == null)
             {
                 Log.Warning("Got null method when attempting to load prefix.");
@@ -206,8 +203,6 @@ internal class CRC_Loader : Mod
 
     private static void PatchDefaultThreatPointsNow()
     {
-        //CRC_Loader.harmony = new Harmony("net.marvinkosh.rimworld.mod.combatreadinesscheck");
-        Log.Message("Combat Readiness Check: Trying to patch StorytellerUtility.DefaultThreatPointsNow");
         var methodInfo = AccessTools.Method(typeof(StorytellerUtility), "DefaultThreatPointsNow");
         if (methodInfo == null)
         {
@@ -216,7 +211,7 @@ internal class CRC_Loader : Mod
         }
         else
         {
-            var method = AccessTools.Method(typeof(MarvsStoryTellerUtility), "Prefix");
+            var method = AccessTools.Method(typeof(MarvsStoryTellerUtility), nameof(MarvsStoryTellerUtility.Prefix));
             if (method == null)
             {
                 Log.Warning("Got null method when attempting to load prefix.");
@@ -224,38 +219,37 @@ internal class CRC_Loader : Mod
             else
             {
                 harmony.Patch(methodInfo, new HarmonyMethod(method));
-                Log.Message("Combat Readiness Check: Patched StorytellerUtility.DefaultThreatPointsNow.");
             }
         }
     }
 
     public class CRC_Settings : ModSettings
     {
-        public bool debugLog;
-        public int numPointsPerColonist = 45;
-        public float percentOfCombatPowerForColonyMechs = 27f;
-        public float percentOfCombatPowerForReleasableAnimals = 9f;
-        public float percentOfValueForArmour = 100f;
-        public float percentOfValueForBuildings = 25f;
-        public float percentOfValueForIndustrialWeapons = 100f;
-        public float percentOfValueForPreIndustrialWeapons = 25f;
-        public bool preIndustrialArmor;
+        public bool DebugLog;
+        public int NumPointsPerColonist = 45;
+        public float PercentOfCombatPowerForColonyMechs = 27f;
+        public float PercentOfCombatPowerForReleasableAnimals = 9f;
+        public float PercentOfValueForArmour = 100f;
+        public float PercentOfValueForBuildings = 25f;
+        public float PercentOfValueForIndustrialWeapons = 100f;
+        public float PercentOfValueForPreIndustrialWeapons = 25f;
+        public bool PreIndustrialArmor;
 
         public override void ExposeData()
         {
-            Scribe_Values.Look(ref numPointsPerColonist, "num_Points_Per_Colonist", 34, true);
-            Scribe_Values.Look(ref percentOfValueForBuildings, "percent_Value_For_Buildings", 25f, true);
-            Scribe_Values.Look(ref percentOfValueForArmour, "percent_Value_For_Armour", 100f, true);
-            Scribe_Values.Look(ref percentOfValueForIndustrialWeapons, "percent_Value_For_IndustrialWeapons", 100f,
+            Scribe_Values.Look(ref NumPointsPerColonist, "num_Points_Per_Colonist", 34, true);
+            Scribe_Values.Look(ref PercentOfValueForBuildings, "percent_Value_For_Buildings", 25f, true);
+            Scribe_Values.Look(ref PercentOfValueForArmour, "percent_Value_For_Armour", 100f, true);
+            Scribe_Values.Look(ref PercentOfValueForIndustrialWeapons, "percent_Value_For_IndustrialWeapons", 100f,
                 true);
-            Scribe_Values.Look(ref percentOfValueForPreIndustrialWeapons, "percent_Value_For_PreIndustrialWeapons",
+            Scribe_Values.Look(ref PercentOfValueForPreIndustrialWeapons, "percent_Value_For_PreIndustrialWeapons",
                 25f, true);
-            Scribe_Values.Look(ref percentOfCombatPowerForReleasableAnimals, "percent_Value_For_ReleasableAnimals",
+            Scribe_Values.Look(ref PercentOfCombatPowerForReleasableAnimals, "percent_Value_For_ReleasableAnimals",
                 9f, true);
-            Scribe_Values.Look(ref percentOfCombatPowerForColonyMechs, "percent_Value_For_ColonyMechs",
+            Scribe_Values.Look(ref PercentOfCombatPowerForColonyMechs, "percent_Value_For_ColonyMechs",
                 27f, true);
-            Scribe_Values.Look(ref debugLog, "shouldLogDebugInfo", forceSave: true);
-            Scribe_Values.Look(ref preIndustrialArmor, "preIndustrialArmor");
+            Scribe_Values.Look(ref DebugLog, "shouldLogDebugInfo", forceSave: true);
+            Scribe_Values.Look(ref PreIndustrialArmor, "preIndustrialArmor");
         }
     }
 }

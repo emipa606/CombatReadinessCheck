@@ -10,7 +10,7 @@ public static class MarvsStoryTellerUtility
     private const float GlobalMaxPointsMercilesss = 20000f;
     private const float GlobalMinPoints = 35f;
 
-    public static readonly SimpleCurve PointsPerWealthCurve =
+    private static readonly SimpleCurve PointsPerWealthCurve =
     [
         new CurvePoint(0.0f, 0.0f),
         new CurvePoint(100f, 0.0f),
@@ -49,8 +49,8 @@ public static class MarvsStoryTellerUtility
 
     public static bool Prefix(IIncidentTarget target, ref float __result)
     {
-        __result = CombatReadinessPoints(target);
-        if (CRC_Loader.settings.debugLog && GenTicks.TicksGame % 500 == 0)
+        __result = combatReadinessPoints(target);
+        if (CRC_Loader.Settings.DebugLog && GenTicks.TicksGame % 500 == 0)
         {
             Log.Message($"Recalculated incident-points to {__result}");
         }
@@ -58,7 +58,7 @@ public static class MarvsStoryTellerUtility
         return false;
     }
 
-    private static float CombatReadinessPoints(IIncidentTarget target)
+    private static float combatReadinessPoints(IIncidentTarget target)
     {
         ArmouryUtility.GetColonistArmouryPoints(target.PlayerPawnsForStoryteller, target, out var colonistPoints,
             out var caravanArmouryWealth);
@@ -70,7 +70,7 @@ public static class MarvsStoryTellerUtility
         var num2 = Mathf.Lerp(1f, Find.StoryWatcher.watcherAdaptation.TotalThreatPointsFactor,
             Find.Storyteller.difficulty.adaptationEffectFactor);
         var num3 = num1 + (colonistPoints * num2);
-        if (CRC_Loader.settings.debugLog && GenTicks.TicksGame % 500 == 0)
+        if (CRC_Loader.Settings.DebugLog && GenTicks.TicksGame % 500 == 0)
         {
             Log.Message(
                 $"Adapted caravan armoury points for {target}: {caravanArmouryPoints} from caravan wealth {caravanArmouryWealth}");
@@ -83,14 +83,14 @@ public static class MarvsStoryTellerUtility
         var x = num3 * target.IncidentPointsRandomFactorRange.RandomInRange;
         var threatScale = Find.Storyteller.difficulty.threatScale;
         var num4 = Find.Storyteller.def.pointsFactorFromDaysPassed.Evaluate(GenDate.DaysPassed);
-        if (CRC_Loader.settings.debugLog && GenTicks.TicksGame % 500 == 0)
+        if (CRC_Loader.Settings.DebugLog && GenTicks.TicksGame % 500 == 0)
         {
             Log.Message(
                 $"Random factor for {target}: {target.IncidentPointsRandomFactorRange.RandomInRange}, Threat scale: {threatScale}, Point factor from days passed: {num4}");
         }
 
         var num5 = PointsCurve.Evaluate(x) * threatScale * num4;
-        if (CRC_Loader.settings.debugLog && GenTicks.TicksGame % 500 == 0)
+        if (CRC_Loader.Settings.DebugLog && GenTicks.TicksGame % 500 == 0)
         {
             Log.Message($"Unclamped Points for {target}: {num5}");
         }

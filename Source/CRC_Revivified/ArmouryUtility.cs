@@ -8,8 +8,8 @@ namespace CRC_Reintegrated;
 public static class ArmouryUtility
 {
     private const int ArmouryPointsUpdateInterval = 2400;
-    private static readonly Dictionary<Map, float> cachedStorytellerArmouryPoints = new Dictionary<Map, float>();
-    private static readonly Dictionary<Map, int> tickOfLastCacheUpdate = new Dictionary<Map, int>();
+    private static readonly Dictionary<Map, float> cachedStorytellerArmouryPoints = new();
+    private static readonly Dictionary<Map, int> tickOfLastCacheUpdate = new();
 
     public static void GetStorytellerArmouryPoints(IIncidentTarget target, out float armouryPoints)
     {
@@ -42,7 +42,7 @@ public static class ArmouryUtility
                 thing.GetStatValue(StatDefOf.ArmorRating_Sharp) >
                 (ModLister.HasActiveModWithName("Combat Extended") ? 4.0 : 0.389999985694885))
             {
-                num += (float)(thing.MarketValue * (double)CRC_Loader.settings.percentOfValueForArmour /
+                num += (float)(thing.MarketValue * (double)CRC_Loader.Settings.PercentOfValueForArmour /
                                100.0);
             }
         }
@@ -62,12 +62,12 @@ public static class ArmouryUtility
             if (thing.def.techLevel >= TechLevel.Industrial)
             {
                 num += (float)(thing.MarketValue *
-                    (double)CRC_Loader.settings.percentOfValueForIndustrialWeapons / 100.0);
+                    (double)CRC_Loader.Settings.PercentOfValueForIndustrialWeapons / 100.0);
             }
             else
             {
                 num += (float)(thing.MarketValue *
-                    (double)CRC_Loader.settings.percentOfValueForPreIndustrialWeapons / 100.0);
+                    (double)CRC_Loader.Settings.PercentOfValueForPreIndustrialWeapons / 100.0);
             }
         }
 
@@ -92,7 +92,7 @@ public static class ArmouryUtility
         }
     }
 
-    private static float GetArmouryWealth(Pawn dude)
+    private static float getArmouryWealth(Pawn dude)
     {
         var num = 0.0f;
         if (dude.equipment != null)
@@ -107,12 +107,12 @@ public static class ArmouryUtility
                 if (thing.def.techLevel >= TechLevel.Industrial)
                 {
                     num += (float)(thing.MarketValue *
-                        (double)CRC_Loader.settings.percentOfValueForIndustrialWeapons / 100.0);
+                        (double)CRC_Loader.Settings.PercentOfValueForIndustrialWeapons / 100.0);
                 }
                 else
                 {
                     num += (float)(thing.MarketValue *
-                        (double)CRC_Loader.settings.percentOfValueForPreIndustrialWeapons / 100.0);
+                        (double)CRC_Loader.Settings.PercentOfValueForPreIndustrialWeapons / 100.0);
                 }
             }
         }
@@ -128,15 +128,15 @@ public static class ArmouryUtility
                     continue;
                 }
 
-                if (CRC_Loader.settings.preIndustrialArmor && apparel.def.techLevel < TechLevel.Industrial)
+                if (CRC_Loader.Settings.PreIndustrialArmor && apparel.def.techLevel < TechLevel.Industrial)
                 {
                     num += (float)(apparel.MarketValue *
-                        (double)CRC_Loader.settings.percentOfValueForPreIndustrialWeapons / 100.0);
+                        (double)CRC_Loader.Settings.PercentOfValueForPreIndustrialWeapons / 100.0);
                 }
                 else
                 {
                     num += (float)(apparel.MarketValue *
-                        (double)CRC_Loader.settings.percentOfValueForArmour / 100.0);
+                        (double)CRC_Loader.Settings.PercentOfValueForArmour / 100.0);
                 }
             }
         }
@@ -153,12 +153,12 @@ public static class ArmouryUtility
                 if (thing.def.techLevel >= TechLevel.Industrial)
                 {
                     num += (float)(thing.MarketValue *
-                        (double)CRC_Loader.settings.percentOfValueForIndustrialWeapons / 100.0);
+                        (double)CRC_Loader.Settings.PercentOfValueForIndustrialWeapons / 100.0);
                 }
                 else
                 {
                     num += (float)(thing.MarketValue *
-                        (double)CRC_Loader.settings.percentOfValueForPreIndustrialWeapons / 100.0);
+                        (double)CRC_Loader.Settings.PercentOfValueForPreIndustrialWeapons / 100.0);
                 }
             }
 
@@ -170,22 +170,22 @@ public static class ArmouryUtility
                 continue;
             }
 
-            if (CRC_Loader.settings.preIndustrialArmor && thing.def.techLevel < TechLevel.Industrial)
+            if (CRC_Loader.Settings.PreIndustrialArmor && thing.def.techLevel < TechLevel.Industrial)
             {
                 num += (float)(thing.MarketValue *
-                    (double)CRC_Loader.settings.percentOfValueForPreIndustrialWeapons / 100.0);
+                    (double)CRC_Loader.Settings.PercentOfValueForPreIndustrialWeapons / 100.0);
             }
             else
             {
                 num += (float)(thing.MarketValue *
-                    (double)CRC_Loader.settings.percentOfValueForArmour / 100.0);
+                    (double)CRC_Loader.Settings.PercentOfValueForArmour / 100.0);
             }
         }
 
         return num;
     }
 
-    private static float GetBattleScore(Pawn dude)
+    private static float getBattleScore(Pawn dude)
     {
         var num = ((0.5f * dude.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness)) +
                    (0.5f * dude.health.capacities.GetLevel(PawnCapacityDefOf.Sight))) *
@@ -209,7 +209,7 @@ public static class ArmouryUtility
             num = 1.2f;
         }
 
-        return num * dude.BodySize * CRC_Loader.settings.numPointsPerColonist;
+        return num * dude.BodySize * CRC_Loader.Settings.NumPointsPerColonist;
     }
 
     public static void GetColonistArmouryPoints(
@@ -237,7 +237,7 @@ public static class ArmouryUtility
 
             if (target is Caravan)
             {
-                num2 += GetArmouryWealth(colonist) * num4;
+                num2 += getArmouryWealth(colonist) * num4;
             }
 
             if (colonist.RaceProps.Animal)
@@ -246,19 +246,19 @@ public static class ArmouryUtility
                     colonist.training.HasLearned(TrainableDefOf.Release) &&
                     colonist.health.capacities.GetLevel(PawnCapacityDefOf.Moving) >= 0.15)
                 {
-                    num1 += (float)(CRC_Loader.settings.percentOfCombatPowerForReleasableAnimals *
+                    num1 += (float)(CRC_Loader.Settings.PercentOfCombatPowerForReleasableAnimals *
                         (double)colonist.kindDef.combatPower / 100.0) * num3;
                 }
             }
             else if (colonist.IsColonyMech && !colonist.Downed)
             {
-                num1 += (float)(CRC_Loader.settings.percentOfCombatPowerForColonyMechs *
+                num1 += (float)(CRC_Loader.Settings.PercentOfCombatPowerForColonyMechs *
                     (double)colonist.kindDef.combatPower / 100.0) * num3;
             }
             else if (!colonist.WorkTagIsDisabled(WorkTags.Violent) &&
                      colonist.health.capacities.GetLevel(PawnCapacityDefOf.Moving) >= 0.15)
             {
-                num1 += GetBattleScore(colonist);
+                num1 += getBattleScore(colonist);
             }
         }
 
