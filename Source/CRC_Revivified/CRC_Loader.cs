@@ -10,23 +10,24 @@ namespace CRC_Reintegrated;
 internal class CRC_Loader : Mod
 {
     private const string ModName = "Combat Readiness Check";
-
-
-    public static CRC_Settings Settings;
-    private static Harmony harmony;
+    private static readonly Harmony harmony = new("net.marvinkosh.rimworld.mod.combatreadinesscheck");
 
     private static string currentVersion;
 
     public CRC_Loader(ModContentPack content) : base(content)
     {
-        harmony = new Harmony("net.marvinkosh.rimworld.mod.combatreadinesscheck");
         currentVersion =
             VersionFromManifest.GetVersionFromModMetaData(content.ModMetaData);
         Settings = GetSettings<CRC_Settings>();
+        CeLoaded = ModLister.GetActiveModWithIdentifier("CETeam.CombatExtended", true) != null;
         patchMap();
         patchCaravan();
         PatchDefaultThreatPointsNow();
     }
+
+    public static bool CeLoaded { get; private set; }
+
+    public static CRC_Settings Settings { get; private set; }
 
     public override string SettingsCategory()
     {

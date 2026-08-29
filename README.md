@@ -1,6 +1,6 @@
 # [Combat Readiness Check (Continued)](https://steamcommunity.com/sharedfiles/filedetails/?id=2314304057)
 
-![Image](https://i.imgur.com/buuPQel.png)
+![Image](https://img.litet.net/logos/Info.png)
 
 Update of MarvinKoshs mod
 https://steamcommunity.com/sharedfiles/filedetails/?id=1542424263
@@ -9,9 +9,9 @@ with permission.
 - Update work by Craze
 - Added option to treat pre-industrial armors the same as pre-industrial weapons
 
-![Image](https://i.imgur.com/pufA0kM.png)
+![Image](https://img.litet.net/logos/Notice.png)
 	
-![Image](https://i.imgur.com/Z4GOv8H.png)
+![Image](https://img.litet.net/logos/OriginalDescription.png)
 
 Alters the normal threat points calculation.
 
@@ -90,13 +90,13 @@ Go to Ludeon Forums for more information and direct download links: https://lude
 
 If you like this mod, why not consider looking at some of my [other mods](http://steamcommunity.com/id/marvinkosh/myworkshopfiles/?appid=294100)?
 
-![Image](https://i.imgur.com/PwoNOj4.png)
+![Image](https://img.litet.net/logos/ReportingIssues.png)
 
 
 
 -  See if the the error persists if you just have this mod and its requirements active.
 -  If not, try adding your other mods until it happens again.
--  Post your error-log using [HugsLib](https://steamcommunity.com/workshop/filedetails/?id=818773962) or the standalone [Uploader](https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404) and command Ctrl+F12
+-  Always post your log using the [Log Uploader](https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404)
 -  For best support, please use the Discord-channel for error-reporting.
 -  Do not report errors by making a discussion-thread, I get no notification of that.
 -  If you have the solution for a problem, please post it to the GitHub repository.
@@ -104,4 +104,4 @@ If you like this mod, why not consider looking at some of my [other mods](http:/
 
  
 
-[![Image](https://img.shields.io/github/v/release/emipa606/CombatReadinessCheck?label=latest%20version&style=plastic&color=9f1111&labelColor=black)](https://steamcommunity.com/sharedfiles/filedetails/changelog/2314304057) | tags:  wealth calculation
+[![Image](https://img.shields.io/github/v/release/emipa606/CombatReadinessCheck?label=latest%20version&style=plastic&color=9f1111&labelColor=black)](https://steamcommunity.com/sharedfiles/filedetails/changelog/2314304057) | threat points, wealth calculation

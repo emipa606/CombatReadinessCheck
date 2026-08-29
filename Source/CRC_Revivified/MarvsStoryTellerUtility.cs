@@ -80,13 +80,14 @@ public static class MarvsStoryTellerUtility
                 $"Adapted Colonist Points for {target}: {(float)(colonistPoints * (double)num2)}(adaptation factor: {Find.Storyteller.difficulty.adaptationEffectFactor})");
         }
 
-        var x = num3 * target.IncidentPointsRandomFactorRange.RandomInRange;
+        var randomFactor = target.IncidentPointsRandomFactorRange.RandomInRange;
+        var x = num3 * randomFactor;
         var threatScale = Find.Storyteller.difficulty.threatScale;
         var num4 = Find.Storyteller.def.pointsFactorFromDaysPassed.Evaluate(GenDate.DaysPassed);
         if (CRC_Loader.Settings.DebugLog && GenTicks.TicksGame % 500 == 0)
         {
             Log.Message(
-                $"Random factor for {target}: {target.IncidentPointsRandomFactorRange.RandomInRange}, Threat scale: {threatScale}, Point factor from days passed: {num4}");
+                $"Random factor for {target}: {randomFactor}, Threat scale: {threatScale}, Point factor from days passed: {num4}");
         }
 
         var num5 = PointsCurve.Evaluate(x) * threatScale * num4;

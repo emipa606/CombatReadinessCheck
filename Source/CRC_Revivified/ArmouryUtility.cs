@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
@@ -31,44 +32,54 @@ public static class ArmouryUtility
         }
 
         var num = 0.0f;
-        var outThings1 = new List<Thing>();
-        ThingOwnerUtility.GetAllThingsRecursively(map, ThingRequest.ForGroup(ThingRequestGroup.Apparel),
-            outThings1, false,
-            x => x is not PassingShip &&
-                 (x is not Pawn pawn || pawn.Faction == Faction.OfPlayer));
-        foreach (var thing in outThings1)
+        var outThings1 = SimplePool<List<Thing>>.Get();
+        var outThings2 = SimplePool<List<Thing>>.Get();
+        try
         {
-            if (thing.SpawnedOrAnyParentSpawned && !thing.Position.Fogged(map) &&
-                thing.GetStatValue(StatDefOf.ArmorRating_Sharp) >
-                (ModLister.HasActiveModWithName("Combat Extended") ? 4.0 : 0.389999985694885))
+            ThingOwnerUtility.GetAllThingsRecursively(map, ThingRequest.ForGroup(ThingRequestGroup.Apparel),
+                outThings1, false,
+                x => x is not PassingShip &&
+                     (x is not Pawn pawn || pawn.Faction == Faction.OfPlayer));
+            foreach (var thing in outThings1)
             {
-                num += (float)(thing.MarketValue * (double)CRC_Loader.Settings.PercentOfValueForArmour /
-                               100.0);
+                if (thing.SpawnedOrAnyParentSpawned && !thing.Position.Fogged(map) &&
+                    thing.GetStatValue(StatDefOf.ArmorRating_Sharp) >
+                    (CRC_Loader.CeLoaded ? 4.0 : 0.389999985694885))
+                {
+                    num += (float)(thing.MarketValue * (double)CRC_Loader.Settings.PercentOfValueForArmour /
+                                   100.0);
+                }
+            }
+
+            ThingOwnerUtility.GetAllThingsRecursively(map, ThingRequest.ForGroup(ThingRequestGroup.Weapon),
+                outThings2, false,
+                x => x is not PassingShip &&
+                     (x is not Pawn pawn || pawn.Faction == Faction.OfPlayer));
+            foreach (var thing in outThings2)
+            {
+                if (!thing.SpawnedOrAnyParentSpawned || thing.Position.Fogged(map))
+                {
+                    continue;
+                }
+
+                if (thing.def.techLevel >= TechLevel.Industrial)
+                {
+                    num += (float)(thing.MarketValue *
+                        (double)CRC_Loader.Settings.PercentOfValueForIndustrialWeapons / 100.0);
+                }
+                else
+                {
+                    num += (float)(thing.MarketValue *
+                        (double)CRC_Loader.Settings.PercentOfValueForPreIndustrialWeapons / 100.0);
+                }
             }
         }
-
-        var outThings2 = new List<Thing>();
-        ThingOwnerUtility.GetAllThingsRecursively(map, ThingRequest.ForGroup(ThingRequestGroup.Weapon),
-            outThings2, false,
-            x => x is not PassingShip &&
-                 (x is not Pawn pawn || pawn.Faction == Faction.OfPlayer));
-        foreach (var thing in outThings2)
+        finally
         {
-            if (!thing.SpawnedOrAnyParentSpawned || thing.Position.Fogged(map))
-            {
-                continue;
-            }
-
-            if (thing.def.techLevel >= TechLevel.Industrial)
-            {
-                num += (float)(thing.MarketValue *
-                    (double)CRC_Loader.Settings.PercentOfValueForIndustrialWeapons / 100.0);
-            }
-            else
-            {
-                num += (float)(thing.MarketValue *
-                    (double)CRC_Loader.Settings.PercentOfValueForPreIndustrialWeapons / 100.0);
-            }
+            outThings1.Clear();
+            SimplePool<List<Thing>>.Return(outThings1);
+            outThings2.Clear();
+            SimplePool<List<Thing>>.Return(outThings2);
         }
 
         armouryPoints = num;
@@ -83,12 +94,9 @@ public static class ArmouryUtility
 
         cachedStorytellerArmouryPoints[map] = armouryPoints;
 
-        foreach (var key in cachedStorytellerArmouryPoints.Keys)
+        foreach (var key in cachedStorytellerArmouryPoints.Keys.Where(k => k == null).ToList())
         {
-            if (key == null)
-            {
-                cachedStorytellerArmouryPoints.Remove(key);
-            }
+            cachedStorytellerArmouryPoints.Remove(key);
         }
     }
 
@@ -123,7 +131,7 @@ public static class ArmouryUtility
             foreach (var apparel in wornApparel)
             {
                 if (!(apparel.GetStatValue(StatDefOf.ArmorRating_Sharp) >
-                      (ModLister.HasActiveModWithName("Combat Extended") ? 4.0 : 0.389999985694885)))
+                      (CRC_Loader.CeLoaded ? 4.0 : 0.389999985694885)))
                 {
                     continue;
                 }
@@ -163,9 +171,7 @@ public static class ArmouryUtility
             }
 
             if (!thing.def.IsApparel || !(thing.GetStatValue(StatDefOf.ArmorRating_Sharp) >
-                                          (ModLister.HasActiveModWithName("Combat Extended")
-                                              ? 4.0
-                                              : 0.389999985694885)))
+                                          (CRC_Loader.CeLoaded ? 4.0 : 0.389999985694885)))
             {
                 continue;
             }
@@ -195,13 +201,11 @@ public static class ArmouryUtility
             return 0.0f;
         }
 
-        foreach (var hediff in dude.health.hediffSet.hediffs)
+        if (dude.health.hediffSet.hediffs.Any(hediff =>
+                !hediff.def.lethalSeverity.Equals(-1f) && hediff.def.PossibleToDevelopImmunityNaturally() &&
+                !hediff.FullyImmune()))
         {
-            if (hediff.def.lethalSeverity != -1.0 && hediff.def.PossibleToDevelopImmunityNaturally() &&
-                !hediff.FullyImmune())
-            {
-                return 0.0f;
-            }
+            return 0.0f;
         }
 
         if (num > 1.20000004768372)
