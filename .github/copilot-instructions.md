@@ -1,45 +1,51 @@
-# GitHub Copilot Instructions for Combat Readiness Check (Continued)
+# GitHub Copilot Instructions for Combat Readiness Check (Continued) RimWorld Mod
 
 ## Mod Overview and Purpose
-The Combat Readiness Check (Continued) mod is an update of MarvinKosh's original mod, extended and maintained by Craze. It aims to alter the normal threat points calculation in RimWorld. Threat points are used by the storyteller to determine the composition of raider groups that will raid your colony or ambush your caravans. This mod provides more granular control over how these points are generated, allowing players to adjust settings to personalize their gameplay experience.
+
+The Combat Readiness Check (Continued) mod is an update of MarvinKoshs mod, which alters the normal threat points calculation in RimWorld. The mod provides additional options for adjusting settings and includes a debug option to output current armoury points and building points to the log.
 
 ## Key Features and Systems
-- **Revised Threat Points Calculation:** The mod alters how threat points are derived from colony wealth, colonist abilities, and trained animals.
-- **In-game Mod Settings Menu:** Customize the generation of threat points via an in-game settings menu. Changes persist across saves.
-- **Debugging Options:** Enable a debug mode to log the current threat points breakdown, including detailed logs for colonists, armoury, and buildings.
-- **Wealth Calculation Adjustments:**
-  - Weapons and armor are evaluated at market value.
-  - Pre-industrial weapons count as 25% of their market value.
-  - Building wealth contributes only 25% to threat points.
-- **Colonist Point Adjustments:**
-  - Baseline colonist points set at 45 with adjustments based on impairments or enhancements.
-  - Non-combatants and incapacitated colonists do not contribute to threat points.
-- **Adaptation Factor Adjustment:** Caps adaptation and random multipliers to reduce their impact. 
-- **Customizable Settings Presets:** Switch between predefined global settings such as "Fair," "This is fine," "Feels bad man," and "Pain train."
-- **Extended Adjustment Range:** Set percentage adjustments up to 800%.
+
+- **Threat Points Calculation**: The mod modifies the threat points calculation used by the storyteller to determine raiders and ambushes.
+- **Wealth Calculation**: The mod adjusts wealth calculation for weapons, armor, and buildings.
+- **Colonist Calculation**: The mod modifies the way colonists are counted in threat points, taking into account their combat abilities and conditions.
+- **Adaptation and Random Threat Point Multipliers Cap**: An additional feature to cap adaptation and random raid factors at 1.
+- **Default Settings Buttons**: Buttons to change between default settings.
+- **Extended Adjustment Range**: Extended the max range of possible adjustment to 800% for percentage settings.
 
 ## Coding Patterns and Conventions
-- **Naming Conventions:** Classes use CamelCase. Methods use camelCase and are descriptive.
-- **Extension Methods:** Extensive use of static utility methods to process wealth and threat points.
-- **Modular Design:** Code is compartmentalized, with distinct files for handling separate aspects of the game (e.g., MarvsMapWealthForStoryTeller.cs).
+
+- **C# Files**: The mod consists of 5 C# files, each with its own purpose:
+  - `ArmouryUtility.cs`: Contains methods for getting armoury wealth, battle score, colonist armoury points, and storyteller armoury points.
+  - `MarvsCaravanWealthForStoryTeller.cs`: Contains a prefix method for caravan wealth calculation.
+  - `MarvsStoryTellerUtility.cs`: Contains methods for combat readiness points and prefix methods.
+  - `CRC_Loader.cs`: Contains methods for loading the mod, settings window, and patching methods.
+  - `MarvsMapWealthForStoryTeller.cs`: Contains a prefix method for map wealth calculation.
+- **XML Files**: The mod uses XML for Harmony patching, specifically in `Storyteller_Patched.xml`.
 
 ## XML Integration
-- The mod includes a single XML file (`Storyteller_Patched.xml`) which likely contains the necessary configuration settings to interact with RimWorld's storyteller mechanisms. This file is crucial for linking C# logic with the RimWorld environment.
+
+The mod uses XML files for Harmony patching. The `Storyteller_Patched.xml` file contains the necessary patches to modify the threat points calculation.
 
 ## Harmony Patching
-- The mod uses Harmony for patching, an essential tool for modifying RimWorld's game logic without directly altering the source code.
-- **Key Harmony Files:**
-  - `MarvsMapWealthForStoryTeller.cs` and `MarvsCaravanWealthForStoryTeller.cs` leverage Harmony's prefixing capabilities to intercept and alter the behavior of relevant game functions.
-  - Ensure all patches are enclosed within Harmony annotations such as `[HarmonyPatch]`, and verify their compatibility with other mods.
+
+The mod uses Harmony for patching RimWorld's code. Key patches include:
+- `MarvsCaravanWealthForStoryTeller.cs`: Prefix method for caravan wealth calculation.
+- `MarvsMapWealthForStoryTeller.cs`: Prefix method for map wealth calculation.
+- `CRC_Loader.cs`: Methods for patching the default threat points now, patching the map, and patching the caravan.
 
 ## Suggestions for Copilot
-- **Generate Code Templates:** Copilot can help by generating initial code templates for common tasks, such as setting up Harmony patches or creating new mod settings.
-- **Handle Edge Cases:** Suggest improvements to handle exceptions and edge cases in point calculations or settings adjustments.
-- **Improve Readability:** Propose refactoring suggestions that enhance code readability without altering functionality.
-- **Code Documentation:** Assist in generating XML comments or in-line comments to document complex logic within methods.
-- **Unit Testing Support:** Provide basic scaffolding for unit tests to ensure the reliability of threat point calculations and other critical functions.
 
-By leveraging the above instructions, contributors can effectively understand and develop the Combat Readiness Check (Continued) mod with GitHub Copilot's assistance.
+- **Coding Assistance**: Use Copilot to assist with coding tasks such as creating new methods, modifying existing methods, and implementing new features.
+- **XML Patching**: Use Copilot to assist with creating and modifying XML patch files for Harmony.
+- **Debugging**: Use Copilot to assist with debugging by suggesting potential issues and solutions.
+- **Testing**: Use Copilot to assist with testing by suggesting test cases and scenarios.
+
+## Additional Notes
+
+- **Dependencies**: The mod depends on `brrainz.harmony`.
+- **Version**: The current version of the mod is 1.2.0.
+- **Contact**: If you have any questions or issues, please use the Discord-channel for error-reporting or the GitHub repository for solutions.
 
 ## Project Solution Guidelines
 - Relevant mod XML files are included as Solution Items under the solution folder named XML, these can be read and modified from within the solution.
@@ -53,4 +59,6 @@ By leveraging the above instructions, contributors can effectively understand an
 ## Hard rules (must follow)
 - Do NOT run commands that modify the repo (no git commit, git apply, dotnet format) unless explicitly asked.
 - Prefer minimal reads: read only the smallest code region needed (around the suspicious lines).
+- When mentioning SonarQube issues, automatically use the SonarQube MCP service to fetch and address issues instead of making inferred fixes without querying SonarQube first.
+- When mentioning the rimworld log, automatically use the Rimworld MCP service to fetch the log.
 
